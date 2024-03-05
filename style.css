@@ -14,8 +14,14 @@ nav {
   background-color: #333;
   padding: 0px 1rem;
 }
-
+button {
+  height: 5vh;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 10px;
+}
 .board {
+  display: flex;
   background-color: #add8e6;
   padding: 20px;
   margin: 10px;
@@ -64,8 +70,17 @@ nav {
   right: 0;
 }
 .list {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
   width: 400px;
   height: fit-content;
   background-color: chocolate;
   border-radius: 15px;
+}
+
+.task {
+  background-color: #1875ff;
+  margin: 1rem;
+  overflow-y: auto;
 }
