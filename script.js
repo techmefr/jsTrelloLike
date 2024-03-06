@@ -9,6 +9,7 @@ btnAddBoard.addEventListener("click", () => {
     return;
   }
   createBoard(boardName);
+  saveToLocalStorage();
 });
 
 function createBoard(name) {
@@ -29,6 +30,7 @@ function createBoard(name) {
       return;
     }
     createList(listName, newBoard);
+    saveToLocalStorage();
   });
   addListButton.classList.add("addBtn");
 
@@ -44,7 +46,7 @@ function createBoard(name) {
 }
 
 function createList(name, parent) {
-  const newList = document.createElement("article");
+  const newList = document.createElement("div");
   newList.classList.add("list");
 
   const listNameElement = document.createElement("h3");
@@ -61,6 +63,7 @@ function createList(name, parent) {
       return;
     }
     createTask(taskName, newList);
+    saveToLocalStorage();
   });
   addTaskButton.classList.add("addBtn");
 
@@ -75,7 +78,7 @@ function createList(name, parent) {
 }
 
 function createTask(name, parent) {
-  const newTask = document.createElement("div");
+  const newTask = document.createElement("article");
   newTask.classList.add("task");
   newTask.textContent = name;
 
@@ -91,6 +94,32 @@ function createDeleteButton(parent) {
   deleteButton.textContent = "Supprimer";
   deleteButton.addEventListener("click", function () {
     parent.remove();
+    saveToLocalStorage();
   });
   return deleteButton;
+}
+
+function saveToLocalStorage() {
+  const boards = document.querySelectorAll(".board");
+  const data = [];
+  boards.forEach((board) => {
+    const boardData = {
+      name: board.querySelector("h2").textContent,
+      lists: [],
+    };
+    const lists = board.querySelectorAll(".list");
+    lists.forEach((list) => {
+      const listData = {
+        name: list.querySelector("h3").textContent,
+        tasks: [],
+      };
+      const tasks = list.querySelectorAll(".task");
+      tasks.forEach((task) => {
+        listData.tasks.push(task.textContent);
+      });
+      boardData.lists.push(listData);
+    });
+    data.push(boardData);
+  });
+  localStorage.setItem("boards", JSON.stringify(data));
 }
